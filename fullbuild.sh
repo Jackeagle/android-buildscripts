@@ -1,16 +1,16 @@
 
-#bin/sh
+#! /bin/sh
 #this script copies the patches from the patch folder to the rom folder 
 # just replace the ~/patch to ur folder name where the patches exist and change ~/cm11 to the path of the rom 
 
 
 
 #these copy normal patches reqd to boot the device and core functions to work
-cp -r ~/patch/audiovideo.diff ~/cm11/frameworks/av
-cp -r ~/patch/bluetooth.diff ~/cm11/hardware/broadcom/libbt
-cp -r ~/patch/hwc.diff ~/cm11/frameworks/native
-cp -r ~/patch/webview.diff ~/cm11/external/chromium_org
-cp -r ~/patch/ril.diff ~/cm11/system/core
+cp -r ~/patch/audiovideo.diff ~/aicp/frameworks/av
+cp -r ~/patch/bluetooth.diff ~/aicp/hardware/broadcom/libbt
+cp -r ~/patch/hwc.diff ~/aicp/frameworks/native
+cp -r ~/patch/webview.diff ~/aicp/external/chromium_org
+cp -r ~/patch/ril.diff ~/aicp/system/core
 
 
 
@@ -25,21 +25,21 @@ echo -e ""
 echo -e ""
 echo -e " APPLYING BLUETOOTH PATCH "
 echo -e ""
-cd hardware/broadcom/libbt
+
+cd aicp/hardware/broadcom/libbt
 git checkout .
 patch -p1 < bluetooth.diff
-cd ../../../
+cd ../../../../
 echo -e " BLUETOOTH PATCH APPLIED SUCCESSFULLY "
 echo -e ""
 
 # HW Composer Patch 
 echo -e ""
 echo -e " APPLYING HWC PATCH "
-cd frameworks/native
+cd aicp/frameworks/native
 git checkout .
 patch -p1 < hwc.diff
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/62/53162/6 && git format-patch -1 --stdout FETCH_HEAD
-
+cd ../../../
 echo -e ""
 echo -e " HWC PATCHES APPLIED SUCCESSFULLY"
 echo -e ""
@@ -48,28 +48,30 @@ echo -e ""
 echo -e ""
 echo -e " APPLYING A/V PATCHES"
 echo -e ""
-cd ../av
+cd aicp/frameworks/av
 git checkout .
 patch -p1 < audiovideo.diff 
+cd ../../../
 echo -e ""
 echo -e " AUDIO/VIDEO PATCHES APPLIED SUCCESSFULLY "
+echo -e ""
 
 # WEBVIEW PATCHES 
 echo -e ""
 echo -e " APPLYING WEBVIEW PATCH "
 echo -e ""
-cd ../../
-cd external/chromium_org
+cd aicp/external/chromium_org
 git checkout .
 patch -p1 < webview.diff
+cd ../../
 echo -e ""
 echo -e " WEBVIEW PATCHES APPLIED SUCCESSFULLY"
+echo -e ""
 
 # ACTUAL BUILD 
 echo -e ""
 echo -e " ALL PATCHES APPLIED SUCCESSFULLY AND NOW BUILD STARTING "
 echo -e ""
-cd ../../
 
 #checking if msim exists
 
@@ -79,10 +81,10 @@ then
    
 #now copying msim patches ... change the path cm11 to any other rom you are compiling
 
-cp -r ~/patch/msim/msim_frameworks_base.diff ~/cm11/frameworks/base
-cp -r ~/patch/msim/msim_frameworks_opt_telephony-msim.patch ~/cm11/frameworks/opt/telephony-msim
-cp -r ~/patch/msim/msim_packages_apps_Setting.diff ~/cm11/packages/apps/Settings
-cp -r ~/patch/msim/msim_packages_services_Telephony.diff ~/cm11/packages/services/Telephony
+cp -r ~/patch/msim/msim_frameworks_base.diff ~/aicp/frameworks/base
+cp -r ~/patch/msim/msim_frameworks_opt_telephony-msim.patch ~/aicp/frameworks/opt/telephony-msim
+cp -r ~/patch/msim/msim_packages_apps_Setting.diff ~/aicp/packages/apps/Settings
+cp -r ~/patch/msim/msim_packages_services_Telephony.diff ~/aicp/packages/services/Telephony
 
 echo -e ""
 echo -e "MSIM PATCHES COPIED ! PLEASE REVIEW FOR ANY ERRORS"
@@ -96,7 +98,7 @@ echo -e ""
 cd frameworks/base 
 git checkout .
 patch -p1 < msim_frameworks_base.diff
-rm -rf /res/layout/status_bar_expanded.xml.orig
+rm -rf packages/SystemUI/res/layout/status_bar_expanded.xml.orig
 
 echo -e " frameworks/base patched successfully "
 echo -e ""
