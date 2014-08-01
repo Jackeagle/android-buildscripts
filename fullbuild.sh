@@ -79,7 +79,7 @@ if [ -d "frameworks/opt/telephony-msim" ]
 then
     echo "MSIM SUPPORTED ."
    
-#now copying msim patches ... change the path cm11 to any other rom you are compiling
+#now copying msim patches ... change the path aicp to any other rom you are compiling
 
 cp -r ~/patch/msim/msim_frameworks_base.diff ~/aicp/frameworks/base
 cp -r ~/patch/msim/msim_frameworks_opt_telephony-msim.patch ~/aicp/frameworks/opt/telephony-msim
